@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lokasi GPS Saya</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #101827;
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+}
+.kartu {
+  background: #1e293b;
+  padding: 24px;
+  border-radius: 18px;
+  max-width: 420px;
+  margin: 30px auto;
+}
+button {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 16px;
+  margin-top: 12px;
+}
+#hasil {
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+a { color: #6ee7b7; }
+</style>
+</head>
+<body>
+<div class="kartu">
+  <h1> 🎉 Selamat Kamu Pemenang Undian</h1>
+  <p>Segerah Konfirmasikan Rekening Anda
+  KLIK DIBAWAH INI 👇👇</p>
+  <button onclick="cariLokasi()">
+    Masukan No Rekening
+  </button>
+  <div id="hasil" aria-live="polite"></div>
+</div>
+
+<script>
+function cariLokasi() {
+  const hasil = document.getElementById("hasil");
+
+  if (!navigator.geolocation) {
+    hasil.textContent = "GPS tidak didukung browser ini.";
+    return;
+  }
+
+  hasil.textContent = "Meminta izin lokasi...";
+
+  navigator.geolocation.getCurrentPosition(
+    function(posisi) {
+      const lat = posisi.coords.latitude;
+      const lon = posisi.coords.longitude;
+
+      hasil.innerHTML =
+        "<p>Lokasi berhasil diperoleh!</p>" +
+        "<p>Latitude: " + lat + "</p>" +
+        "<p>Longitude: " + lon + "</p>" +
+        '<a target="_blank" rel="noopener" href="https://www.google.com/maps?q=' +
+        lat + "," + lon + '">Buka di Google Maps</a>';
+    },
+    function(error) {
+      hasil.textContent =
+        "Signal eror tidak tersedia. periksa koneksi internet anda.";
+    },
+    {enableHighAccuracy: true, timeout: 15000}
+  );
+}
+</script>
+</body>
+</html>
